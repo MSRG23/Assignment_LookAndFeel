@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 Cities Health Data Project</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #007BFF, #FFA500);
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #555;
+        }
+
+        .search-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 0;
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .search-bar {
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+            background: linear-gradient(135deg, #FFA500, #007BFF); /* Gradient background */
+            border-radius: 30px;
+            padding: 5px;
+            overflow: hidden; /* Hide child elements that overflow */
+        }
+
+        #cityInput {
+            border-radius: 25px;
+            border: none;
+            padding: 10px 50px 10px 20px;
+            width: 100%;
+            background-color: #fff; /* White background */
+            color: #333; /* Text color */
+        }
+
+        .search-bar .btn {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border: none;
+            border-radius: 50%;
+            color: #007BFF;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar .btn:hover {
+            background-color: #fff; /* Solid white on hover */
+        }
+
+        .table {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            margin-top: 50px;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #2c3e50, #34495e); /* Gradient effect */
+            color: #ecf0f1; /* Light text color for contrast */
+            padding: 15px 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.1); /* Slight white border for depth */
+            font-weight: 500; /* Semi-bold text */
+            letter-spacing: 1px; /* Spaced out letters for modern look */
+        }
+
+        .table td {
+            padding: 15px 10px;
+            transition: background-color 0.3s;
+        }
+
+        .table tr {
+            transition: background-color 0.3s;
+        }
+
+        .table tr:nth-child(odd) { /* Alternating row colors for better readability */
+            background-color: #f7f9fc;
+        }
+
+        .table tr:hover { /* Hover effect for rows */
+            background-color: #e8eef4;
+        }
+
+        /* Increase the margin-top for the table to make room between the search bar and the table */
+        .table.table-striped.mt-5 {
+            margin-top: 40px;
+        }
+
+        h2.title-gradient {
+            font-size: 2.5rem; /* Increase the font size */
+            background: linear-gradient(90deg, #2c3e50, #1a5276);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 20px; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            padding-bottom: 10px; 
+        }
+
+        /* Decorative underline for the title */
+        h2.title-gradient::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, #2c3e50, #1a5276);
+            border-radius: 2px;
+        }
+
+        .btn-gradient {
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            transition: opacity 0.3s;
+            background: linear-gradient(90deg, #2c3e50, #1a5276);
+            border-radius: 5px;
+            margin-right: 5px;  /* Space between the buttons */
+            cursor: pointer;
+        }
+
+        .btn-gradient:hover {
+            opacity: 0.9;
+        }
+
+        .btn-edit {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            margin-bottom: 2px;
+        }
+
+        .btn-delete {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="index.html" class="animate__animated animate__fadeInLeft"><i class="fas fa-home"></i> Home</a>
+        <a href="search.html" class="animate__animated animate__fadeInLeft animate__delay-1s"><i class="fas fa-search"></i> Search Health Metrics</a>
+        <a href="create.html" class="animate__animated animate__fadeInLeft animate__delay-2s"><i class="fas fa-plus"></i> Add Data</a>
+        <a href="graph.html" class="animate__animated animate__fadeInLeft animate__delay-3s"><i class="fas fa-chart-bar"></i> Graph</a>
+        <a href="aboutus.html" class="animate__animated animate__fadeInLeft animate__delay-4s"><i class="fas fa-info-circle"></i> About Us</a>
+    </div>
+
+    <section class="container mt-5 animate__animated animate__fadeInDown">
+        <h2 class="title-gradient">Search Data by City</h2>
+        <div class="search-section">
+            <div class="search-bar">
+                <input type="text" id="cityInput" class="form-control" placeholder="Enter city name">
+                <button class="btn" onclick="fetchData()"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- This section gets the animate__fadeInUp animation and a slight delay -->
+    <section class="container mt-5 animate__animated animate__fadeInUp animate__delay-1s">
+        <!-- Table to display data -->
+        <table class="table table-striped mt-5 animate__animated animate__fadeInUp">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>Population</th>
+                    <th>Geographic Measure</th>
+                    <th>Low Confidence Limit</th>
+                    <th>High Confidence Limit</th>
+                    <th>Year</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable"></tbody>
+        </table>
+    </section>
+
+    <footer>
+        <!-- Footer content here -->
+    </footer>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- Script to handle data fetching and rendering -->
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "https://data.cdc.gov/resource/i2ek-k3pa.json",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $('#dataTable').empty();
+                    for (let i = 0; i < 10 && i < data.length; i++) {
+                        let row = `<tr>
+                            <td>${i+1 || ''}</td>
+                            <td>${data[i].statedesc || ''}</td>
+                            <td>${data[i].cityname || ''}</td>
+                            <td>${data[i].populationcount || ''}</td>
+                            <td>${data[i].geographiclevel || ''}</td>
+                            <td>${data[i].low_confidence_limit || ''}</td>
+                            <td>${data[i].high_confidence_limit || ''}</td>
+                            <td>${data[i].year || ''}</td>
+                            <td>
+                                <button class="btn-gradient btn-edit">Edit <i class="fas fa-pencil-alt"></i></button>
+                                <button class="btn-gradient btn-delete">Delete <i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>`;
+                        $('#dataTable').append(row);
+                    }
+                },
+                error: function (err) {
+                    console.error("Error fetching data:", err);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
